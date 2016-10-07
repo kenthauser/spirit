@@ -11,49 +11,61 @@
 #include <boost/mpl/list.hpp>
 #include <boost/type_traits/is_base_of.hpp>
 #include <type_traits>
-
+#include <typeinfo>
 ///////////////////////////////////////////////////////////////////////////////
 namespace boost { namespace spirit { namespace x3
 {
     template <typename T>
     class forward_ast
     {
+    void trace(const char *loc, void const *orig = nullptr)
+    {
+    	std::cout << "forward_ast::" << typeid(std::declval<T>).name() << ": " << loc << " @ " << this << " [" << p_ << "]";
+    	if (orig)
+    		std::cout << " from " << orig;
+    	std::cout << std::endl;
+    }
+
     public:
 
         typedef T type;
 
     public:
 
-        forward_ast() : p_(new T) {}
+        forward_ast() : p_(new T) { trace ("default ctor"); }
 
         forward_ast(forward_ast const& operand)
-            : p_(new T(operand.get())) {}
+            : p_(new T(operand.get())) { trace ("copy ctor", operand.p_); }
 
         forward_ast(forward_ast&& operand)
             : p_(operand.p_)
         {
+        	trace ("move ctor", operand.p_);
             operand.p_ = 0;
         }
 
         forward_ast(T const& operand)
-            : p_(new T(operand)) {}
+            : p_(new T(operand)) { trace ("const T ctor", &operand); }
 
         forward_ast(T&& operand)
-            : p_(new T(std::move(operand))) {}
+            : p_(new T(std::move(operand))) { trace ("move T ctor", &operand); }
 
         ~forward_ast()
         {
+        	trace ("dtor");
             boost::checked_delete(p_);
         }
 
         forward_ast& operator=(forward_ast const& rhs)
         {
+        	trace ("assign const&", rhs.p_);
             assign(rhs.get());
             return *this;
         }
 
         void swap(forward_ast& operand) BOOST_NOEXCEPT
         {
+        	trace ("swap const&", operand.p_);
             T* temp = operand.p_;
             operand.p_ = p_;
             p_ = temp;
@@ -61,18 +73,21 @@ namespace boost { namespace spirit { namespace x3
 
         forward_ast& operator=(T const& rhs)
         {
+        	trace ("assign const T&", &rhs);
             assign(rhs);
             return *this;
         }
 
         forward_ast& operator=(forward_ast&& rhs) BOOST_NOEXCEPT
         {
+        	trace ("assign &&", &rhs);
             swap(rhs);
             return *this;
         }
 
         forward_ast& operator=(T&& rhs)
         {
+        	trace ("assign T&&", &rhs);
             get() = std::move(rhs);
             return *this;
         }
