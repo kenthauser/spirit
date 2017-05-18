@@ -105,12 +105,12 @@ namespace boost { namespace spirit { namespace x3
         Action f;
     };
 
-    template <typename P, typename Action>
-    inline action<typename extension::as_parser<P>::value_type, Action>
-    operator/(P const& p, Action f)
-    {
-        return { as_parser(p), f };
-    }
+  //    template <typename P, typename Action>
+  //    inline action<typename extension::as_parser<P>::value_type, Action>
+  //    operator/(P const& p, Action f)
+  //    {
+  //        return { as_parser(p), f };
+  //    }
 }}}
 
 #endif
