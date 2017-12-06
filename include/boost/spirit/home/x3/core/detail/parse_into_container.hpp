@@ -4,8 +4,8 @@
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
-#if !defined(SPIRIT_PARSE_INTO_CONTAINER_JAN_15_2013_0957PM)
-#define SPIRIT_PARSE_INTO_CONTAINER_JAN_15_2013_0957PM
+#if !defined(BOOST_SPIRIT_X3_PARSE_INTO_CONTAINER_JAN_15_2013_0957PM)
+#define BOOST_SPIRIT_X3_PARSE_INTO_CONTAINER_JAN_15_2013_0957PM
 
 #include <type_traits>
 
@@ -265,7 +265,7 @@ namespace boost { namespace spirit { namespace x3 { namespace detail
             Attribute rest;
             bool r = parser.parse(first, last, context, rcontext, rest);
             if (r)
-                attr.insert(attr.end(), rest.begin(), rest.end());
+                traits::append(attr, rest.begin(), rest.end());
             return r;
         }
 
