@@ -72,6 +72,7 @@ run binary.cpp ;
 run bool.cpp ;
 run char1.cpp ;
 run char_class.cpp ;
+run container_support.cpp ;
 run debug.cpp ;
 run difference.cpp ;
 run eoi.cpp ;
@@ -115,5 +116,7 @@ run confix.cpp ;
 run repeat.cpp ;
 run seek.cpp ;
 
+run fusion_map.cpp ;
 run x3_variant.cpp ;
 run error_handler.cpp /boost//system /boost//filesystem ;
+run iterator_check.cpp ;
